@@ -12,7 +12,7 @@ const Home: NextPage = ({ currentPhoto }: { currentPhoto: ImageProps }) => {
   const { photoId } = router.query;
   let index = Number(photoId);
 
-  const currentPhotoUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${currentPhoto.public_id}.${currentPhoto.format}`;
+  const currentPhotoUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${currentPhoto.public_id}`;
 
   return (
     <>
@@ -60,10 +60,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export async function getStaticPaths() {
   const results = await cloudinary.v2.search
-    .expression(`folder:${process.env.CLOUDINARY_FOLDER}/*`)
+    .expression('resource_type:image AND folder="Home/Vercel-Test"')
     .sort_by("public_id", "desc")
     .max_results(400)
     .execute();
+
+  console.log("GetStaticPaths results:", results);
 
   let fullPaths = [];
   for (let i = 0; i < results.resources.length; i++) {
