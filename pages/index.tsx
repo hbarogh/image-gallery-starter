@@ -143,6 +143,8 @@ export async function getStaticProps() {
     .sort_by("public_id", "desc")
     .max_results(400)
     .execute();
+    console.log("Cloudinary folder:", process.env.CLOUDINARY_FOLDER);
+    console.log("Search results:", results);
   let reducedResults: ImageProps[] = [];
 
   let i = 0;
