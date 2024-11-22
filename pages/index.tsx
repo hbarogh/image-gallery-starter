@@ -145,6 +145,9 @@ export async function getStaticProps() {
     .execute();
     console.log("Cloudinary folder:", process.env.CLOUDINARY_FOLDER);
     console.log("Search results:", results);
+    console.log("cloudinary name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME )
+
+
   let reducedResults: ImageProps[] = [];
 
   let i = 0;
