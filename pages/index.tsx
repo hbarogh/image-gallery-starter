@@ -74,7 +74,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
               Clone and Deploy
             </a>
           </div>
-          {images.map(({ id, public_id, format, blurDataUrl }) => (
+          {images.map(({ id, public_id, format, blurDataUrl, version }) => (
             <Link
               key={id}
               href={`/?photoId=${id}`}
@@ -89,7 +89,7 @@ const Home: NextPage = ({ images }: { images: ImageProps[] }) => {
                 style={{ transform: "translate3d(0, 0, 0)" }}
                 placeholder="blur"
                 blurDataURL={blurDataUrl}
-                src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/${public_id}`}
+                src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/v${version}/${public_id}.jpg`}
                 width={720}
                 height={480}
                 sizes="(max-width: 640px) 100vw,
@@ -139,13 +139,14 @@ export default Home;
 
 export async function getStaticProps() {
   const results = await cloudinary.v2.search
-    .expression(`folder:"${process.env.CLOUDINARY_FOLDER}"`)
+    .expression("")
     .sort_by("public_id", "desc")
     .max_results(400)
     .execute();
     console.log("Cloudinary folder:", process.env.CLOUDINARY_FOLDER);
     console.log("Search results:", results);
-    console.log("cloudinary name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME )
+    console.log("cloudinary name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME );
+    console.log("public ID:", results.resources.public_id);
 
 
   let reducedResults: ImageProps[] = [];
@@ -158,6 +159,7 @@ export async function getStaticProps() {
       width: result.width,
       public_id: result.public_id,
       format: result.format,
+      version: result.version,
     });
     i++;
   }
