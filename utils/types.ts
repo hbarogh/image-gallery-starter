@@ -6,7 +6,7 @@ export interface ImageProps {
   public_id: string;
   format: string;
   blurDataUrl?: string;
-  version: string;
+  version: number;
 }
 
 export interface SharedModalProps {

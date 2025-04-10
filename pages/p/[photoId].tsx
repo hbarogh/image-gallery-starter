@@ -43,6 +43,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       width: result.width,
       public_id: result.public_id,
       format: result.format,
+      version: result.version,
     });
     i++;
   }
